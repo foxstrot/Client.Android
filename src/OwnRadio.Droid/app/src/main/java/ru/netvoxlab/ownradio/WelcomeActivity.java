@@ -63,7 +63,7 @@ public class WelcomeActivity extends AppCompatActivity implements NetworkStateRe
 		if (!prefManager.isFirstTimeLaunch()) {
 			launchHomeScreen();
 			((App)getApplicationContext()).setAutoPlay(true);
-			finish();
+			return;
 		}
 		networkStateReceiver = new NetworkStateReceiver();
 		networkStateReceiver.addListener(this);
