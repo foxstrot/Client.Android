@@ -23,6 +23,7 @@ public class App extends Application {
 	private Process process;
 	private Integer countDownloadTrying;
 	private Boolean autoPlay;
+	private Boolean isFillingCacheActive;
 	
 	private static App instance;
 	
@@ -137,5 +138,13 @@ public class App extends Application {
 	
 	public void setAutoPlay(Boolean autoPlay){
 		this.autoPlay = autoPlay;
+	}
+	
+	public Boolean getFillingCacheActive() {
+		return isFillingCacheActive;
+	}
+	
+	public void setFillingCacheActive(Boolean fillingCacheActive) {
+		isFillingCacheActive = fillingCacheActive;
 	}
 }

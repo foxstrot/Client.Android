@@ -80,7 +80,7 @@ public class TrackDataAccess {
 		ContentValues result = new ContentValues();
 		trackDB.openDatabase();
 		db = trackDB.database();
-		Cursor userCursor = db.rawQuery("SELECT id, trackurl FROM track WHERE countplay != ? AND isexist = ? ORDER BY countplay DESC LIMIT 1", new String[]{String.valueOf(0), String.valueOf(1)});
+		Cursor userCursor = db.rawQuery("SELECT id, trackurl FROM track WHERE countplay != ? AND isexist = ? AND id != ? ORDER BY countplay DESC LIMIT 1", new String[]{String.valueOf(0), String.valueOf(1), String.valueOf(new PrefManager(mContext).getPrefItem("LastTrackID",""))});
 		if (userCursor.moveToFirst()) {
 			result.put("id", userCursor.getString(0));
 			result.put("trackurl", userCursor.getString(1));

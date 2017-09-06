@@ -678,7 +678,7 @@ public class MainActivity extends AppCompatActivity	implements NavigationView.On
 								handler.post(new Runnable() {
 									@Override
 									public void run() {
-										dialog.setMessage(getResources().getString(R.string.wait_caching) + " \n" + ((App)getApplicationContext()).getCountDownloadTrying() + " попытка загрузки");
+										dialog.setMessage(getResources().getString(R.string.wait_caching) + " \n" + ((App)getApplicationContext()).getCountDownloadTrying()+1 + " попытка загрузки");
 									}
 								});
 							}
@@ -702,14 +702,10 @@ public class MainActivity extends AppCompatActivity	implements NavigationView.On
 				}
 			}
 			
-			if(intent.getAction().equals(ACTION_UPDATE_FILLCACHE_PROGRESS)){
-				int count = Integer.valueOf(intent.getExtras().getInt(EXTRA_FILLCACHE_PROGRESS, 0));
-				if (count > 0) {
-					txtFillCacheProgress.setVisibility(View.VISIBLE);
-					txtFillCacheProgress.setText("Кешировано треков: " + count);
-				} else {
+			if(intent.getAction().equals(ACTION_UPDATE_FILLCACHE_PROGRESS)) {
+				int count = intent.getExtras().getInt(EXTRA_FILLCACHE_PROGRESS, 0);
+				if (count == 0)
 					txtFillCacheProgress.setVisibility(View.GONE);
-				}
 			}
 		}
 	};
@@ -807,7 +803,38 @@ public class MainActivity extends AppCompatActivity	implements NavigationView.On
 			
 			new Utilites().CheckCountTracksAndDownloadIfNotEnought(MainActivity.this, DeviceId);
 			
+			if(((App)getApplicationContext()).getFillingCacheActive()){
+				final Handler h = new Handler();
+				txtFillCacheProgress.setVisibility(View.VISIBLE);
+					txtFillCacheProgress.setText("Кешировано треков: " + ((App)getApplicationContext()).getCountDownloadTrying());
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						while (txtFillCacheProgress.getVisibility() == View.VISIBLE) {
+							try {
+								Thread.sleep(5000);
+							} catch (Exception ex) {
+								
+							}
+							h.post(new Runnable() {
+								@Override
+								public void run() {
+									txtFillCacheProgress.setText("Кешировано треков: " + ((App)getApplicationContext()).getCountDownloadTrying());
+									
+								}
+							});
+							
+						}
+					}
+				}).start();
+			} else {
+				txtFillCacheProgress.setVisibility(View.GONE);
+			}
 			
+			if(new TrackDataAccess(getApplicationContext()).GetExistTracksCount()<1) {
+				txtTrackTitle.setText("");
+				txtTrackArtist.setText("");
+			}
 			
 			return;
 		}catch (Exception ex) {

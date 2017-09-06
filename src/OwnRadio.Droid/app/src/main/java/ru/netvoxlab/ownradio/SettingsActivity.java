@@ -429,6 +429,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 					((App)context.getApplicationContext()).setCountDownloadTrying(0);
 					final LongRequestAPIService longRequestAPIService = new LongRequestAPIService();
 					isCachingStarted = true;
+					((App)context.getApplicationContext()).setFillingCacheActive(true);
 					Toast.makeText(context, "Заполнение кэша началось", Toast.LENGTH_LONG).show();
 					
 					try{
@@ -443,9 +444,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 									downloaderIntent.putExtra(EXTRA_DEVICEID, prefManager.getDeviceId());
 									downloaderIntent.putExtra(EXTRA_COUNT, 3);
 									context.getApplicationContext().startService(downloaderIntent);
-									Intent progressIntent = new Intent(ACTION_UPDATE_FILLCACHE_PROGRESS);
-									progressIntent.putExtra(EXTRA_FILLCACHE_PROGRESS, ((App)context.getApplicationContext()).getCountDownloadTrying());
-									context.sendBroadcast(progressIntent);
 									try {
 										Thread.sleep(30000);
 									} catch (Exception ex) {
@@ -456,6 +454,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 								progressIntent.putExtra(EXTRA_FILLCACHE_PROGRESS, 0);
 								context.sendBroadcast(progressIntent);
 								isCachingStarted = false;
+								((App)context.getApplicationContext()).setFillingCacheActive(false);
 							}
 						}).start();
 					}catch (Exception ex){

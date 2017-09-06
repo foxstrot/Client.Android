@@ -7,8 +7,8 @@ android {
 		applicationId "ru.netvoxlab.ownradio"
 		minSdkVersion 19
 		targetSdkVersion 25
-		versionCode 75
-		versionName "v2017.09.01"
+		versionCode 76
+		versionName "v2017.09.06"
 		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
 
@@ -51,8 +51,7 @@ dependencies {
 	compile 'com.android.support.test.espresso:espresso-core:2.2.2'
 	compile 'com.android.support.constraint:constraint-layout:1.0.2'
 	compile 'uk.co.chrisjenx:calligraphy:2.3.0'
-	compile 'com.android.support:support-v4:25.3.1'
-
+	compile "com.android.support:support-v4:$supportVersion"
 	compile ('org.solovyev.android:checkout:1.0.1@aar') {
 		transitive = true
 	}
