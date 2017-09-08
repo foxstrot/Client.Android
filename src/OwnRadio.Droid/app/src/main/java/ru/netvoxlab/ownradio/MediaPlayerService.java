@@ -1125,13 +1125,18 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
 	}
 	
 	public void PreloadTrack() {
+		utilites.SendInformationTxt(getApplicationContext(), "Вызов функции PreloadTrack");
 		String tid = prefManager.getPrefItem("LastTrackID", "");
+		utilites.SendInformationTxt(getApplicationContext(), "PreloadTrack: Получен сохраненный id трека: " + tid);
 		if (tid != "") {
 			int currentPosition = prefManager.getPrefItemInt("LastPosition", -1) - 5000;
 			if (currentPosition < 0)
 				currentPosition = 0;
+			utilites.SendInformationTxt(getApplicationContext(), "PreloadTrack: Получена сохраненная позиция проигрывания: " + currentPosition);
 			track = trackDataAccess.GetTrackById(tid);
+			
 			if (track != null) {
+				utilites.SendInformationTxt(getApplicationContext(), "PreloadTrack: Получена информация о треке из БД");
 				utilites.SendInformationTxt(getApplicationContext(), "getPreloadTrack, id=" + track.getAsString("id"));
 				FlagDownloadTrack = false;
 				TrackID = track.getAsString("id");
@@ -1140,10 +1145,13 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
 				startPosition = currentPosition;
 				
 				if (!new File(trackURL).exists()) {
+					utilites.SendInformationTxt(getApplicationContext(), "PreloadTrack: Ошибка! Файл не найден");
 					trackDataAccess.DeleteTrackFromCache(track);
 					track = null;
 					return;
 				}
+			} else {
+				utilites.SendInformationTxt(getApplicationContext(), "PreloadTrack: Ошибка! Информация о треке не найдена в БД");
 			}
 		}
 	}

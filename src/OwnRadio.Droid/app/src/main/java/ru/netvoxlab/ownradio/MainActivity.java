@@ -952,6 +952,7 @@ public class MainActivity extends AppCompatActivity	implements NavigationView.On
 		public void onServiceConnected(ComponentName componentName, IBinder service) {
 			MediaPlayerService.MediaPlayerServiceBinder mediaPlayerServiceBinder = (MediaPlayerService.MediaPlayerServiceBinder) service;
 			if (mediaPlayerServiceBinder != null) {
+				new Utilites().SendInformationTxt(getApplicationContext(), "onServiceConnected");
 				MediaPlayerService.MediaPlayerServiceBinder binder = (MediaPlayerService.MediaPlayerServiceBinder) service;
 				instance.binder = binder;
 				instance.isBound = true;
